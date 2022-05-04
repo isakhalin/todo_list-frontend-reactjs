@@ -4,6 +4,7 @@ import PostList from "./components/PostList";
 import MyButton from "./components/UI/buttons/MyButton";
 import MyInput from "./components/UI/inputs/MyInput";
 import classes from "./components/UI/inputs/MyInput.module.css";
+import PostForm from "./components/PostForm";
 // import Counter from "./components/counter";
 // import ClassCounter from "./components/ClassCounter";
 
@@ -34,25 +35,15 @@ function App() {
     //     setTitle(value)
     // }
 
-    const [post, setPost] = useState({title: '', body: ''})
 
     // const [title, setTitle] = useState('');
     // const [body, setBody] = useState('');
 
     // const bodyInputRef = useRef();
 
-    const addNewPost = (e) => {
-        e.preventDefault()
-        // console.log({title: title})
-        // console.log(bodyInputRef.current.value)
-        // const newPost = {
-        //     id: Date.now(),
-        //     title: post.title,
-        //     body: post.body
-        // }
-        setPosts([...posts, {...post, id: Date.now()}]);
-        setPost({title: '', body: ''});
-    };
+    const createPost = (newPost) => {
+        setPosts([...posts, newPost]);
+    }
 
     return (
         <div className="App">
@@ -72,31 +63,7 @@ function App() {
             {/*<ClassCounter/>*/}
             {/*<hr/>*/}
             {/*<PostItem post={}/>*/}
-            <form>
-                {/*Управляемый компонент*/}
-                <MyInput
-                    value={post.title}
-                    onChange={e => setPost({...post, title: e.target.value})}
-                    type="text"
-                    placeholder="Название поста"
-                />
-
-                <MyInput
-                    value={post.body}
-                    onChange={e => setPost({...post, body: e.target.value})}
-                    type="text"
-                    placeholder="Описание поста"
-                />
-
-                {/*<input ref={bodyInputRef} type="text"/>*/}
-                {/*Неуправляему компонент*/}
-                {/*<MyInput*/}
-                {/*    ref={bodyInputRef}*/}
-                {/*    type="text"*/}
-                {/*    placeholder="Описание поста"*/}
-                {/*/>*/}
-                <MyButton onClick={addNewPost}>Создать пост</MyButton>
-            </form>
+            <PostForm create={createPost}/>
             <PostList posts={posts} title='Список постов про JavaScript'/>
         </div>
     );
