@@ -5,6 +5,7 @@ import MyButton from "./components/UI/buttons/MyButton";
 import MyInput from "./components/UI/inputs/MyInput";
 import classes from "./components/UI/inputs/MyInput.module.css";
 import PostForm from "./components/PostForm";
+import MySelect from "./components/UI/select/MySelect";
 // import Counter from "./components/counter";
 // import ClassCounter from "./components/ClassCounter";
 
@@ -35,14 +36,20 @@ function App() {
     //     setTitle(value)
     // }
 
-
     // const [title, setTitle] = useState('');
     // const [body, setBody] = useState('');
 
     // const bodyInputRef = useRef();
 
+    const [selectedSort, setSelectedSort] = useState('');
+
     const createPost = (newPost) => {
         setPosts([...posts, newPost]);
+    }
+
+    //получаем post из дочернего компонента
+    const removePost = (post) => {
+        setPosts(posts.filter(e => e.id !== post.id));
     }
 
     return (
@@ -64,7 +71,28 @@ function App() {
             {/*<hr/>*/}
             {/*<PostItem post={}/>*/}
             <PostForm create={createPost}/>
-            <PostList posts={posts} title='Список постов про JavaScript'/>
+            <hr style={{margin: '15px 0'}}/>
+            <MySelect
+                value={selectedSort}
+                onChange={sort => setSelectedSort(sort)}
+                options={
+                    [
+                        {value: 'title', name: 'По названию'},
+                        {value: 'body', name: 'По описанию'},
+                        {value: 'value3', name: 'По дате'},
+                    ]
+                }
+                defaultValue='Сортировка по'
+            />
+
+            {posts.length
+                ?
+                <PostList posts={posts} remove={removePost} title='Список постов про JavaScript'/>
+                :
+                <h3 style={{textAlign: 'center', color: 'red'}}>
+                    На данный момент нет ни одной задачи, либо мы о них просто не знаем.
+                </h3>
+            }
         </div>
     );
 }

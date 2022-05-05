@@ -1,7 +1,7 @@
 import React from 'react';
 import PostItem from "./PostItem";
 
-const PostList = ({posts, title}) => {
+const PostList = ({posts, title, remove}) => {
 
     // let posts = props.posts;
 
@@ -11,7 +11,7 @@ const PostList = ({posts, title}) => {
                 {title}
             </h1>
             {posts.map((post, idx) =>
-                <PostItem number={idx + 1} post={post} key={post.id}/>
+                <PostItem remove={remove} number={idx + 1} post={post} key={post.id}/>
             )}
         </div>
     );
