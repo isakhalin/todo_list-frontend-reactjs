@@ -76,7 +76,6 @@ function App() {
         setPosts(posts.filter(e => e.id !== post.id));
     }
 
-
     return (
         <div className="App">
             {/*<h1>{title}</h1>*/}
