@@ -17,7 +17,7 @@ import {useFetching} from "./hooks/useFetching";
 // import Counter from "./components/counter";
 // import ClassCounter from "./components/ClassCounter";
 
-// ЗАКЛАДКА: 1:52:50
+// ЗАКЛАДКА: 1:54:21
 
 function App() {
 
@@ -54,7 +54,7 @@ function App() {
     // const bodyInputRef = useRef();
     // const [selectedSort, setSelectedSort] = useState('');
     // const [searchQuery, setSearchQuery] = useState('');
-    const [fetchPosts, isPostLoading, postError] = useFetching(async () => {
+    const [fetchPosts, isPostsLoading, postError] = useFetching(async () => {
         const posts = await PostService.getAll();
         setPosts(posts)
     })
@@ -107,9 +107,14 @@ function App() {
             </MyButton>
 
             {/*<hr style={{margin: '15px 0'}}/>*/}
-            <PostFilter filter={filter} setFilter={setFilter}/>
-
-            {isPostLoading
+            <PostFilter
+                filter={filter}
+                setFilter={setFilter}
+            />
+            {postError &&
+            <h1>Произошла ошибка загрузки данных ${postError}</h1>
+            }
+            {isPostsLoading
                 ?
                 <div style={{display: 'flex', justifyContent: 'center', marginTop: '50px'}}><MyLoader/></div>
                 :
