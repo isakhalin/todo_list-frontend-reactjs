@@ -10,6 +10,7 @@ import {usePosts} from "./hooks/usePosts";
 import PostService from "./API/PostService";
 import MyLoader from "./components/UI/Loader/MyLoader";
 import {useFetching} from "./hooks/useFetching";
+import getPageCount from "./utils/pages";
 // import MyInput from "./components/UI/inputs/MyInput";
 // import classes from "./components/UI/inputs/MyInput.module.css";
 // import MySelect from "./components/UI/select/MySelect";
@@ -17,7 +18,7 @@ import {useFetching} from "./hooks/useFetching";
 // import Counter from "./components/counter";
 // import ClassCounter from "./components/ClassCounter";
 
-// ЗАКЛАДКА: 1:54:21
+// ЗАКЛАДКА: 2:00:55
 
 function App() {
 
@@ -31,6 +32,9 @@ function App() {
     const [posts, setPosts] = useState([])
     const [filter, setFilter] = useState({sort: '', query: ''})
     const [modal, setModal] = useState(false);
+    const [totalPages, setTotalPages] = useState(0);
+    const [limit, setLimit] = useState(10);
+    const [page, setPage] = useState(1);
     const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
     // const [isPostLoading, setIsPostsLoading] = useState(false);
     // const [likes, setLikes] = useState(0)
@@ -54,9 +58,17 @@ function App() {
     // const bodyInputRef = useRef();
     // const [selectedSort, setSelectedSort] = useState('');
     // const [searchQuery, setSearchQuery] = useState('');
+
+    let pagesArray = [];
+    for (let i=0; i<totalPages; i++) {
+        pagesArray.push(i+1)
+    }
+
     const [fetchPosts, isPostsLoading, postError] = useFetching(async () => {
-        const posts = await PostService.getAll();
-        setPosts(posts)
+        const response = await PostService.getAll(limit, page);
+        setPosts(response.data)
+        const totalCount = response.headers['x-total-count']
+        setTotalPages(getPageCount(totalCount, limit))
     })
 
     useEffect(fetchPosts, []);
